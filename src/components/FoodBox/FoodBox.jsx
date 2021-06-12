@@ -3,8 +3,15 @@ import React, { Component } from 'react';
 class FoodBox extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      item: this.props.item,
+    };
   }
+
+  handleClick = () => {
+    this.props.add(this.state.item);
+  };
+
   render() {
     const { item } = this.props;
     return (
@@ -29,7 +36,9 @@ class FoodBox extends Component {
                 <input className="input" type="number" value={item.quantity} />
               </div>
               <div className="control">
-                <button className="button is-info">+</button>
+                <button className="button is-info" onClick={this.handleClick}>
+                  +
+                </button>
               </div>
             </div>
           </div>
