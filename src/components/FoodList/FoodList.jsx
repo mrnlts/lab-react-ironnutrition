@@ -1,27 +1,31 @@
 import React, { Component } from 'react';
+import Listitem from '../Listitem/Listitem';
+import './FoodList.css';
 
 class FoodList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      foods: this.props.foods,
+      todaysFoods: this.props.todaysFoods,
     };
   }
+
+  removeItem = (item) => {
+    this.props.remove(item);
+  };
+
+  updateList = () => {
+    this.setState({
+      todaysFoods: this.props.todaysFoods,
+    });
+  };
+
   render() {
     return (
       <div>
         <ul>
-          {[...this.state.foods].map((food) => (
-            <li>
-              {`${
-                food.quantity +
-                ' ' +
-                food.name +
-                '=' +
-                food.calories * food.quantity
-              }cal
-              `}
-            </li>
+          {this.state.todaysFoods.map((food, index) => (
+            <Listitem item={food} key={index} delete={this.removeItem} />
           ))}
         </ul>
       </div>

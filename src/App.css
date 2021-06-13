@@ -1,13 +1,9 @@
-.App_header {
-  display: flex;
-}
-
-.App_content {
-  display: flex;
-}
-
 .w-50 {
   width: 50%;
+}
+
+.flex {
+  display: flex;
 }
 
 .f-2 {

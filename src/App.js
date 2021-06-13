@@ -34,36 +34,58 @@ class App extends Component{
     })
   }
 
+  updateCals = (foods) => {
+    let cals = 0;
+    foods.forEach(food => cals = cals + (food.calories * food.quantity));
+    return cals;
+  }
+  
   addTodaysFoods = (item) => {
     const oldFoods = this.state.foods;
     oldFoods.map(food => food === item ? food.quantity = food.quantity + 1 : null)
+
     const oldTodaysFoods = this.state.todaysFoods;
     if (!oldTodaysFoods.includes(item)) {
       oldTodaysFoods.push(item)
-  }
+    }
+    
     this.setState({
       foods: oldFoods,
-      todaysFoods: oldTodaysFoods
+      todaysFoods: oldTodaysFoods,
+      cals: this.updateCals(oldTodaysFoods)
+    })
+  }
+
+  removeItem = (item) => {
+    const oldFoods = this.state.foods;
+    oldFoods.map(food => food === item ? food.quantity = 0 : null);
+
+    const oldTodaysFoods = [...this.state.todaysFoods];
+    oldTodaysFoods.splice([this.state.todaysFoods.indexOf(item)], 1);
+    this.setState({
+      foods: oldFoods,
+      todaysFoods: oldTodaysFoods,
+      cals: this.updateCals(oldTodaysFoods)
     })
   }
 
   render() {
-    const { filteredFoods, todaysFoods } = this.state;
+    const { filteredFoods } = this.state;
     return (
       <div>
-        <div className="App_header">
+        <div className="flex">
           <h1 className="f-3 p-l">IronNutrition</h1>
           <Form add={ this.addNewFood}/>
         </div>
 
         <Search onType={this.checkString}/>
-        <div className="App_content">
+        <div className="flex">
           <div className="w-50 p-l">
             {(filteredFoods.length === 0) ? 'No items found' : filteredFoods.map((food, index) => <FoodBox key={index} item={food} add={this.addTodaysFoods}/>)}
           </div>
           <div className="w-50">
             <h1 className="f-2">Today's foods</h1>
-            <FoodList foods={todaysFoods}/>
+            <FoodList todaysFoods={this.state.todaysFoods} remove={this.removeItem}/>
             <p>{`Total: ${this.state.cals + ''} cal`}</p>
           </div>
         </div>
